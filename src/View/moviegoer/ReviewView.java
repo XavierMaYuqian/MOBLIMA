@@ -11,6 +11,7 @@ import java.util.Scanner;
 
 import static Controller.CineplexManager.*;
 import static Controller.IOController.*;
+import static Model.Constant.MovieStatus.*;
 
 public class ReviewView extends View{
     private Movie movie;
@@ -21,21 +22,29 @@ public class ReviewView extends View{
 
     protected void start(){
         printHeader("Review");
-        printMenu("1. Write a review",
-                "2. View all reviews",
-                "3. Go back", "");
-        int choice = readChoice(1, 3);
-        switch (choice) {
-            case 1:
-                addReview();
-                break;
-            case 2:
-                listReview();
-                break;
-            case 3:
-                destroy();
-                break;
+        if (movie.getMovieStatus() == COMING_SOON){
+            System.out.println("You are not allowed to commet a coming soon movie.");
+            readString("Press any botton to go back.");
+            destroy();
         }
+        else{
+            printMenu("1. Write a review",
+                    "2. View all reviews",
+                    "3. Go back", "");
+            int choice = readChoice(1, 3);
+            switch (choice) {
+                case 1:
+                    addReview();
+                    break;
+                case 2:
+                    listReview();
+                    break;
+                case 3:
+                    destroy();
+                    break;
+            }
+        }
+
     }
 
     private void addReview(){
